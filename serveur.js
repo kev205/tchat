@@ -5,6 +5,7 @@ var path = require('path');
 var path = require('path');
 var express = require('express');
 var app = express();
+app.use('/static', express.static('assets/js'));
 app.use('/static', express.static('node_modules/bootstrap/dist/css'));
 app.use('/static', express.static('node_modules/bootstrap/dist/js'));
 app.use('/static', express.static('node_modules/jquery/dist'));
