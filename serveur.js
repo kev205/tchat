@@ -26,6 +26,9 @@ var chaine = '';
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.sendFile(path.join(__dirname, 'assets/connexion.html'));
+}).get('/site', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.sendFile(path.join(__dirname, 'assets/welcome.html'));
 }).get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname, 'assets/404.html'));
