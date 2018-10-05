@@ -5,7 +5,7 @@ var path = require('path');
 var path = require('path');
 var express = require('express');
 var app = express();
-app.use(express.static('./public'));
+app.use('/static', express.static('node_modules/bootstrap/dist/css'));
 app.use('/static', express.static('node_modules/bootstrap/dist/js'));
 app.use('/static', express.static('node_modules/jquery/dist'));
 
@@ -24,10 +24,10 @@ var chaine = '';
 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
-    res.sendFile(path.join(__dirname, 'vues/connexion.html'));
+    res.sendFile(path.join(__dirname, 'assets/connexion.html'));
 }).get('*', (req, res) => {
     res.status(404);
-    res.sendFile(path.join(__dirname, 'vues/404.html'));
+    res.sendFile(path.join(__dirname, 'assets/404.html'));
 });
 
 app.listen(8080);
