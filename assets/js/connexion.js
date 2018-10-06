@@ -9,7 +9,8 @@ $(document).ready(function () {
       type: 'POST',
       dataType: 'html',
       data: 'login=' + $('#login').val() + '&psswd=' + $('#password').val(),
-      success: function(data){
+      success: function (data) {
+        $('html').html(data);
       },
       error: function (xhttp, error) {
         console.error(xhttp.readyState + ' -> ' + error);
