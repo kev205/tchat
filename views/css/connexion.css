@@ -1,0 +1,12 @@
+.container {
+    border: 1px solid red
+}
+
+#creer {
+    position: absolute;
+    right: 5%
+}
+
+.btn {
+    font-size: 13px
+}

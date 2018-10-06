@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $('.btn').on('click', function () {
+  $('#connect').on('click', function () {
     $.ajax({
       url: '/connexion',
       beforeSend: function (request) {
@@ -7,14 +7,13 @@ $(document).ready(function () {
       },
       type: 'POST',
       dataType: 'html',
-      data: 'login=' + $('#login').val() + '&psswd=' + $('#password').val(),
+      data: 'LOGIN=' + $('#login').val() + '&PSSWD=' + $('#password').val(),
       success: function (data) {
         $('html').html(data);
       },
-      error: function (xhttp, error) {
-        console.error(xhttp.readyState + ' -> ' + error);
-      },
       async: false
     });
+  });
+  $('#creer').on('click', function(){
   });
 });

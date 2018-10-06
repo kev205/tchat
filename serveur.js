@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 var mysql = require('mysql');
-var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 app.use('/static', express.static('views/js'));
+app.use('/static', express.static('views/css'));
 app.use('/static', express.static('node_modules/bootstrap/dist/css'));
 app.use('/static', express.static('node_modules/bootstrap/dist/js'));
 app.use('/static', express.static('node_modules/jquery/dist'));
@@ -25,17 +25,14 @@ function connector() {
   return connection;
 }
 
-app.get('/', (req, res) => {
+app.get('/start', (req, res) => {
   res.render('connexion')
-}).get('*', (req, res) => {
-  res.status(404);
-  res.render('404');
 }).post('/connexion', (req, res) => {
   var db = connector();
   db.connect((error) => {
     if (error)
       throw error;
-    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.login + '\' AND PASSWD = \'' + req.body.psswd + '\'', (error, result, length) => {
+    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\'', (error, result, length) => {
       if (error)
         throw error;
       if (result.length != 0) {
@@ -45,6 +42,9 @@ app.get('/', (req, res) => {
       } else res.render('connexion');
     });
   });
+}).get('*', (req, res) => {
+  res.status(404);
+  res.render('404');
 });
 
 app.listen(8080, '192.168.173.1');
