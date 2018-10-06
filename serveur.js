@@ -2,12 +2,18 @@
 
 var mysql = require('mysql');
 var path = require('path');
+var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
-app.use('/static', express.static('assets/js'));
+app.use('/static', express.static('views/js'));
 app.use('/static', express.static('node_modules/bootstrap/dist/css'));
 app.use('/static', express.static('node_modules/bootstrap/dist/js'));
 app.use('/static', express.static('node_modules/jquery/dist'));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+app.set('view engine', 'ejs');
 
 function connector() {
   var connection = mysql.createConnection({
@@ -19,17 +25,26 @@ function connector() {
   return connection;
 }
 
-var db = connector();
-var chaine = '';
-
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'assets/connexion.html'));
+  res.render('connexion')
 }).get('*', (req, res) => {
   res.status(404);
-  res.sendFile(path.join(__dirname, 'assets/404.html'));
-}).post('/connexion.html', (req, res) => {
-  console.log(req.param('login'));
-  res.sendFile(path.join(__dirname, 'assets/welcome.html'));
+  res.render('404');
+}).post('/connexion', (req, res) => {
+  var db = connector();
+  db.connect((error) => {
+    if (error)
+      throw error;
+    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.login + '\' AND PASSWD = \'' + req.body.psswd + '\'', (error, result, length) => {
+      if (error)
+        throw error;
+      if (result.length != 0) {
+        res.render('welcome', {
+          title: result[0].LOGIN
+        });
+      } else res.render('connexion');
+    });
+  });
 });
 
-app.listen(8080);
+app.listen(8080, '192.168.173.1');
