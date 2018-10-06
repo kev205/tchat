@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
   res.status(404);
   res.sendFile(path.join(__dirname, 'assets/404.html'));
 }).post('/connexion.html', (req, res) => {
+  console.log(req.param('login'));
   res.sendFile(path.join(__dirname, 'assets/welcome.html'));
 });
 
