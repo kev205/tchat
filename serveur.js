@@ -1,7 +1,5 @@
 /* eslint-disable */
 var mysql = require('mysql');
-var fs = require('fs');
-var path = require('path');
 var path = require('path');
 var express = require('express');
 var app = express();
@@ -24,18 +22,14 @@ var db = connector();
 var chaine = '';
 
 app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
     res.sendFile(path.join(__dirname, 'assets/connexion.html'));
-}).get('/account.html', (req, res) => {
-    console.log(req.headers);
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(path.join(__dirname, 'assets/welcome.html'));
 }).get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname, 'assets/404.html'));
-});
-app.post('/', (req, res) => {
+}).post('/connexion.html', (req, res) => {
+    console.clear();
     console.log(req);
+    res.sendFile(path.join(__dirname, 'assets/welcome.html'));
 });
 
 app.listen(8080);

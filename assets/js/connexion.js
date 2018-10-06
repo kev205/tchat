@@ -3,18 +3,17 @@ $(document).ready(function () {
     $.ajax({
       url: 'http://localhost:8080/connexion.html',
       beforeSend: function (request) {
-        request.setRequestHeader('Content-Type', 'text/plain');
+        request.setRequestHeader('Content-Type', 'x-application/www-form-urlencoded');
       },
       type: 'POST',
-      dataType: 'text/html',
+      dataType: 'html',
       data: 'login=' + $('#login').val() + '&psswd=' + $('#password').val(),
-      success: function(){
-        alert('yes');
+      success: function(data){
       },
       error: function (xhttp, error) {
         console.log(xhttp.readyState + ' -> ' + error);
       },
-      async: true
+      async: false
     });
   });
 });
