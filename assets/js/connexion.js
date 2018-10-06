@@ -1,15 +1,18 @@
 $(document).ready(function () {
   $('.btn').on('click', function () {
     $.ajax({
-      url: 'localhost:8080',
+      url: 'http://localhost:8080/connexion.html',
       beforeSend: function (request) {
-        request.setRequestHeader('Content-Type', 'x-application/www-form-urlencoded');
+        request.setRequestHeader('Content-Type', 'text/plain');
       },
       type: 'POST',
       dataType: 'text/html',
       data: 'login=' + $('#login').val() + '&psswd=' + $('#password').val(),
-      error: function (xhttp) {
-        alert(xhttp.readyState);
+      success: function(){
+        alert('yes');
+      },
+      error: function (xhttp, error) {
+        console.log(xhttp.readyState + ' -> ' + error);
       },
       async: true
     });

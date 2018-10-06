@@ -26,12 +26,16 @@ var chaine = '';
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.sendFile(path.join(__dirname, 'assets/connexion.html'));
-}).get('/site', (req, res) => {
+}).get('/account.html', (req, res) => {
+    console.log(req.headers);
     res.setHeader('Content-Type', 'text/html');
     res.sendFile(path.join(__dirname, 'assets/welcome.html'));
 }).get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname, 'assets/404.html'));
+});
+app.post('/', (req, res) => {
+    console.log(req);
 });
 
 app.listen(8080);
