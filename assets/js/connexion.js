@@ -4,6 +4,7 @@ $(document).ready(function () {
       url: 'http://localhost:8080/connexion.html',
       beforeSend: function (request) {
         request.setRequestHeader('Content-Type', 'x-application/www-form-urlencoded');
+        request.setRequestHeader('Content-Encoding', 'UTF-8');
       },
       type: 'POST',
       dataType: 'html',
@@ -11,7 +12,7 @@ $(document).ready(function () {
       success: function(data){
       },
       error: function (xhttp, error) {
-        console.log(xhttp.readyState + ' -> ' + error);
+        console.error(xhttp.readyState + ' -> ' + error);
       },
       async: false
     });
