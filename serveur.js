@@ -25,9 +25,9 @@ function connector() {
   return connection;
 }
 
-app.get('/start', (req, res) => {
+app.get('/start.html', (req, res) => {
   res.render('connexion');
-}).post('/connexion', (req, res) => {
+}).post('/connexion.html', (req, res) => {
   var db = connector();
   db.connect((error) => {
     if (error)

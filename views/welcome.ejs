@@ -1,42 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<h1>
+    <%= title %>
+</h1>
+<nav class="navbar navbar-light bg-light">
+    <a href="#" class="navbar-brand">Menu</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a href="#" class="nav-link">Evenements<span class="sr-only" (current)></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Examens</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Emploi de temps</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <title>Bienvenue</title>
-</head>
-
-<body>
-    <h1>
-        <%= title %>
-    </h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="#" class="navbar-brand">Menu</a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a href="#" class="nav-link">Evenements<span class="sr-only" (current)></span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Examens</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Emploi de temps</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <script type="text/javascript" src="/static/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/welcome.js"></script>
-    <script type="text/javascript" src="/static/bootstrap.min.js"></script>
-</body>
-
-</html>
+<script type="text/javascript" src="/static/jquery.min.js"></script>
+<script type="text/javascript" src="/static/welcome.js"></script>
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
