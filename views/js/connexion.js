@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 $(document).ready(function () {
   $('#connect').on('click', function () {
     $.ajax({
@@ -14,6 +16,5 @@ $(document).ready(function () {
       async: false
     });
   });
-  $('#creer').on('click', function(){
-  });
+  $('#creer').on('click', function () {});
 });

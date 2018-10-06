@@ -1,14 +1,14 @@
-/* eslint-disable */
-
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var express = require('express');
+
 var app = express();
-app.use('/static', express.static('views/js'));
-app.use('/static', express.static('views/css'));
-app.use('/static', express.static('node_modules/bootstrap/dist/css'));
-app.use('/static', express.static('node_modules/bootstrap/dist/js'));
-app.use('/static', express.static('node_modules/jquery/dist'));
+app.use('/static', [express.static('views/js'),
+  express.static('views/css'),
+  express.static('node_modules/bootstrap/dist/css'),
+  express.static('node_modules/bootstrap/dist/js'),
+  express.static('node_modules/jquery/dist')
+]);
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -26,13 +26,13 @@ function connector() {
 }
 
 app.get('/start', (req, res) => {
-  res.render('connexion')
+  res.render('connexion');
 }).post('/connexion', (req, res) => {
   var db = connector();
   db.connect((error) => {
     if (error)
       throw error;
-    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\'', (error, result, length) => {
+    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\'', (error, result) => {
       if (error)
         throw error;
       if (result.length != 0) {
