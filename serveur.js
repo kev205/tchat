@@ -1,8 +1,7 @@
-var mysql = require('mysql');
-var bodyParser = require('body-parser');
-var express = require('express');
-
-var app = express();
+var mysql = require('mysql'),
+  bodyParser = require('body-parser'),
+  express = require('express'),
+  app = express();
 app.use('/static', [express.static('views/js'),
   express.static('views/css'),
   express.static('node_modules/bootstrap/dist/css'),
@@ -26,6 +25,7 @@ function connector() {
 }
 
 app.get('/start.html', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
   res.render('connexion');
 }).post('/connexion.html', (req, res) => {
   var db = connector();
@@ -36,10 +36,12 @@ app.get('/start.html', (req, res) => {
       if (error)
         throw error;
       if (result.length != 0) {
+        res.setHeader('Content-Type', 'text/html');
+        res.setHeader('location', '/connexion.html');
         res.render('welcome', {
           title: result[0].LOGIN
         });
-      } else res.render('connexion');
+      } else res.redirect('/connexion.ejs');
     });
   });
 }).get('*', (req, res) => {

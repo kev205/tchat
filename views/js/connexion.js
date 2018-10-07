@@ -10,7 +10,10 @@ $(document).ready(function () {
       type: 'POST',
       dataType: 'html',
       data: 'LOGIN=' + $('#login').val() + '&PSSWD=' + $('#password').val(),
-      async: false
+      async: false,
+      success: function (data, status, res) {
+        $('html').html(data);
+      }
     });
   });
   $('#creer').on('click', function () {});
