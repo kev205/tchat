@@ -2,6 +2,7 @@ var mysql = require('mysql'),
   bodyParser = require('body-parser'),
   express = require('express'),
   ws = require('ws').Server,
+  path = require('path'),
   app = express();
 app.use('/static', [express.static('views/js'),
   express.static('views/css'),
@@ -26,7 +27,7 @@ function connector() {
 }
 
 app.get('/start.html', (req, res) => {
-  res.sendFile('/static/welcome.html');
+  res.sendFile(path.join(__dirname, 'views/connexion.html'));
 }).post('/connexion.html', (req, res) => {
   var db = connector();
   db.connect((error) => {
@@ -36,13 +37,13 @@ app.get('/start.html', (req, res) => {
       if (error)
         throw error;
       if (result.length != 0) {
-        res.sendFile('/static/connexion.html');
-      } else res.sendFile('/static/welcome.html');
+        res.sendFile(path.join(__dirname, 'views/welcome.html'));
+      } else res.sendFile(path.join(__dirname, '/views/connexion.html'));
     });
   });
 }).get('*', (req, res) => {
   res.status(404);
-  res.render('404');
+  res.sendFile(path.join(__dirname, '/views/404.html'));
 });
 
 app.listen(8080, '192.168.173.1');
