@@ -3,7 +3,7 @@
 $(document).ready(function () {
   $('#connect').on('click', function () {
     $.ajax({
-      url: '/connexion.html',
+      url: '/connexion',
       beforeSend: function (request) {
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       },

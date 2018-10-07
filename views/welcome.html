@@ -1,5 +1,5 @@
 <body>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light">
         <a href="#" class="navbar-brand">Menu</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,32 +7,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a href="#" class="nav-link">Evenements<span class="sr-only" (current)></span>
-                    </a>
+                <li class="nav-item active" id="ev">
+                    <a href="#" class="nav-link">Evenements<span class="sr-only" (current)></span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="exam">
                     <a href="#" class="nav-link">Examens</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="time">
                     <a href="#" class="nav-link">Emploi de temps</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <script type="text/javascript">
-        var ws = new WebSocket('ws://localhost:8080');
-        ws.onopen = function () {
-            ws.send('yo serveur');
-        };
-        ws.onmessage = function (evt) {
-            alert('recu : ' + evt.data);
-        };
-        ws.onclose = function () {
-            alert('a plus');
-        };
-    </script>
     <script type="text/javascript" src="/static/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/welcome.js"></script>
     <script type="text/javascript" src="/static/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/socket.io.js"></script>
+    <script type="text/javascript" src="/static/welcome.js"></script>
 </body>
