@@ -6,7 +6,7 @@ var mysql = require('mysql'),
   app = express(),
   server = require('http').createServer(app), //creation du serveur
   io = require('socket.io')(server),
-  db = require('./dbconnector');
+  db = require('./db-connector');
 
 /** definition des middlewares */
 app.use('/static', [express.static('views/js'),
