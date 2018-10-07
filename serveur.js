@@ -2,7 +2,6 @@ var mysql = require('mysql'),
   bodyParser = require('body-parser'),
   express = require('express'),
   webServ = require('ws').Server,
-  ws = require('ws'),
   path = require('path'),
   app = express();
 app.use('/static', [express.static('views/js'),
@@ -49,9 +48,9 @@ app.get('/start.html', (req, res) => {
 
 var server = app.listen(8080, 'localhost');
 
-let wss = new webServ({
+var wss = new webServ({
   server: server,
-  path: 'ws://localhost:8080'
+  path: 'ws://192.168.173.1:8080'
 });
 wss.on('connection', (ws) => {
   console.log('connection ' + ws.url);
@@ -59,7 +58,4 @@ wss.on('connection', (ws) => {
     console.log('received : ' + message);
   });
   ws.send('bonjour');
-});
-wss.on('close', (e) => {
-  console.log('websocket closed' + e);
 });

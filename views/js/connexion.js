@@ -12,7 +12,7 @@ $(document).ready(function () {
       data: 'LOGIN=' + $('#login').val() + '&PSSWD=' + $('#password').val(),
       async: false,
       success: function (data, status, res) {
-        $('html').html(data);
+        $('body').html(data);
       }
     });
   });
