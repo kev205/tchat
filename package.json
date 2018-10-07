@@ -1,7 +1,7 @@
 {
-  "name": "com.kevin.bixterprise.test",
+  "name": "com.kevin.projet.chat",
   "version": "1.0.0",
-  "description": "test de performance agenda",
+  "description": "application de chat evolue",
   "main": "serveur.js",
   "scripts": {
     "test": "echo hello",
