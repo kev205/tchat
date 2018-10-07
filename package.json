@@ -14,7 +14,10 @@
   "keywords": [
     "agenda"
   ],
-  "author": "kevin",
+  "author": {
+    "name": "cod Team",
+    "email": "ulrichkev2017@gmail.com"
+  },
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
