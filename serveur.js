@@ -28,6 +28,8 @@ function connector() {
   return connection;
 }
 
+var user = {};
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/connexion.html'));
 }).post('/connexion', (req, res) => {
@@ -35,10 +37,13 @@ app.get('/', (req, res) => {
   db.connect((error) => {
     if (error)
       throw error;
-    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\'', (error, result) => {
+    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\' LIMIT 1', (error, result) => {
       if (error)
         throw error;
       if (result.length != 0) {
+        user = {
+          pseudo: result[0].LOGIN
+        };
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
       } else res.sendFile(path.join(__dirname, '/views/connexion.html'));
     });
@@ -49,9 +54,9 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (client) => {
-  client.broadcast.emit('this', {msg: 'new connection'});
-  client.on('chat message', (data) => {
-    console.log('sended : ' + data.msg);
+  client.emit('chat', {
+    person: user.pseudo,
+    msg: 'bienvenue'
   });
 });
 server.listen(8080);
