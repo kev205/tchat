@@ -1,8 +1,7 @@
 /** importation des librairies */
-var mysql = require('mysql'),
-  bodyParser = require('body-parser'),
+var  path = require('path'),
   express = require('express'),
-  path = require('path'),
+  bodyParser = require('body-parser'),
   app = express(),
   server = require('http').createServer(app), //creation du serveur
   io = require('socket.io')(server),
