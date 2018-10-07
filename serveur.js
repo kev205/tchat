@@ -1,7 +1,6 @@
 var mysql = require('mysql'),
   bodyParser = require('body-parser'),
   express = require('express'),
-  webServ = require('ws').Server,
   path = require('path'),
   app = express();
 app.use('/static', [express.static('views/js'),
@@ -44,18 +43,4 @@ app.get('/start.html', (req, res) => {
 }).get('*', (req, res) => {
   res.status(404);
   res.sendFile(path.join(__dirname, '/views/404.html'));
-});
-
-var server = app.listen(8080, 'localhost');
-
-var wss = new webServ({
-  server: server,
-  path: 'ws://192.168.173.1:8080'
-});
-wss.on('connection', (ws) => {
-  console.log('connection ' + ws.url);
-  ws.on('message', (message) => {
-    console.log('received : ' + message);
-  });
-  ws.send('bonjour');
 });

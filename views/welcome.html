@@ -21,7 +21,7 @@
         </div>
     </nav>
     <script type="text/javascript">
-        var ws = new WebSocket('ws://192.168.173.1:8080');
+        var ws = new WebSocket('ws://localhost:8080');
         ws.onopen = function () {
             ws.send('yo serveur');
         };
