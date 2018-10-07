@@ -5,7 +5,8 @@ var mysql = require('mysql'),
   path = require('path'),
   app = express(),
   server = require('http').createServer(app), //creation du serveur
-  io = require('socket.io')(server);
+  io = require('socket.io')(server),
+  db = require('./db');
 
 /** definition des middlewares */
 app.use('/static', [express.static('views/js'),
@@ -20,17 +21,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-/** objet de connexion a la base de donnee */
-function DBhandler(localhost, user, psswd, db) {
-  var connection = mysql.createConnection({
-    host: localhost,
-    user: user,
-    password: psswd,
-    database: db
-  });
-  return connection;
-}
-
 /** utilisateur connecte */
 var user = {};
 
@@ -39,37 +29,27 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/connection.html'));
 })
   .post('/connection', (req, res) => {
-    var db = DBhandler('localhost', 'root', '', 'agenda');
-    db.connect((error) => {
+    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\' LIMIT 1', (error, result) => {
       if (error)
         throw error;
-      db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\' LIMIT 1', (error, result) => {
-        if (error)
-          throw error;
-        if (result.length != 0) {
-          user = {
-            pseudo: result[0].LOGIN
-          };
-          res.sendFile(path.join(__dirname, 'views/welcome.html'));
-        } else res.sendFile(path.join(__dirname, '/views/connection.html'));
-      });
+      if (result.length != 0) {
+        user = {
+          pseudo: result[0].LOGIN
+        };
+        res.sendFile(path.join(__dirname, 'views/welcome.html'));
+      } else res.sendFile(path.join(__dirname, '/views/connection.html'));
     });
   })
   .post('/sign', (req, res) => {
-    var db = DBhandler('localhost', 'root', '', 'agenda');
-    db.connect((error) => {
-      if (error)
-        throw error;
-      db.query('INSERT INTO user(LOGIN, PASSWD) VALUES(\'' + req.body.LOGIN + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
-        if (error) {
-          res.sendFile(path.join(__dirname, '/views/connection.html'));
-          return;
-        }
-        user = {
-          pseudo: req.body.LOGIN
-        };
-        res.sendFile(path.join(__dirname, 'views/welcome.html'));
-      });
+    db.query('INSERT INTO user(LOGIN, PASSWD) VALUES(\'' + req.body.LOGIN + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
+      if (error) {
+        res.sendFile(path.join(__dirname, '/views/connection.html'));
+        return;
+      }
+      user = {
+        pseudo: req.body.LOGIN
+      };
+      res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
   })
   .get('*', (req, res) => {
