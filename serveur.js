@@ -36,9 +36,9 @@ var user = {};
 
 /** traitement des routes/requete utilisateurs */
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/connexion.html'));
+  res.sendFile(path.join(__dirname, 'views/connection.html'));
 })
-  .post('/connexion', (req, res) => {
+  .post('/connection', (req, res) => {
     var db = DBhandler('localhost', 'root', '', 'agenda');
     db.connect((error) => {
       if (error)
@@ -51,7 +51,24 @@ app.get('/', (req, res) => {
             pseudo: result[0].LOGIN
           };
           res.sendFile(path.join(__dirname, 'views/welcome.html'));
-        } else res.sendFile(path.join(__dirname, '/views/connexion.html'));
+        } else res.sendFile(path.join(__dirname, '/views/connection.html'));
+      });
+    });
+  })
+  .post('/sign', (req, res) => {
+    var db = DBhandler('localhost', 'root', '', 'agenda');
+    db.connect((error) => {
+      if (error)
+        throw error;
+      db.query('INSERT INTO user(LOGIN, PASSWD) VALUES(\'' + req.body.LOGIN + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
+        if (error) {
+          res.sendFile(path.join(__dirname, '/views/connection.html'));
+          return;
+        }
+        user = {
+          pseudo: req.body.LOGIN
+        };
+        res.sendFile(path.join(__dirname, 'views/welcome.html'));
       });
     });
   })
