@@ -35,8 +35,12 @@ app.get('/', (req, res) => {
         user = {
           pseudo: result[0].PSEUDO
         };
+        res.setHeader('sign-in', 'succes');
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
-      } else res.sendFile(path.join(__dirname, 'views/connection.html'));
+      } else {
+        res.setHeader('sign-in', 'failed');
+        res.sendFile(path.join(__dirname, 'views/connection.html'));
+      }
     });
   })
   .get('/signIn', (req, res) => {

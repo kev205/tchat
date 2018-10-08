@@ -4,6 +4,7 @@ $(document).ready(function () {
     $('#connect').on('click', function () {
         window.location = '/';
     });
+    
     $('#creer').on('click', function () {
         localStorage.clear();
         var vide = false;
