@@ -23,12 +23,11 @@ $(document).ready(function () {
                 async: false,
                 success: function (data) {
                     $('body').html(data);
-                    $('.container:eq(0)').append('<br>').append($('<div class="alert alert-danger"></div>').html('<center>Aucun champ ne doit etre vide</center>'));
+                    $('.container:eq(0)').append('<br>').append($('<div class="alert alert-warning"></div>').html('<center>Aucun champ ne doit etre vide</center>'));
                     $('#phone').val(localStorage.getItem('tel'));
                     $('#pseudo').val(localStorage.getItem('pseudo'));
                 }
             });
-            vide = false;
         } else {
             $.ajax({
                 url: '/signIn',
@@ -41,22 +40,23 @@ $(document).ready(function () {
                 async: false,
                 success: function (data, status, response) {
                     var error = response.getResponseHeader('sign-in-error');
+                    localStorage.setItem('tel', $('#phone').val());
+                    localStorage.setItem('pseudo', $('#pseudo').val());
+                    $('body').html(data);
                     if (error) {
                         switch (error) {
                             case '1062':
-                                setTimeout(function () {
-                                    $('.container:eq(0)').append('<br>').append($('<div class="alert alert-danger"></div>').html('<center>Le numero est deja utilise</center>'));
-                                }, 100);
+                                $('.container:eq(0)').append('<br>').append($('<div class="alert alert-danger"></div>').html('<center>Le numero est deja utilise</center>'));
                                 break;
                         }
-                        localStorage.setItem('tel', $('#phone').val());
-                        localStorage.setItem('pseudo', $('#pseudo').val());
                     }
-                    $('body').html(data);
                     $('#phone').val(localStorage.getItem('tel'));
                     $('#pseudo').val(localStorage.getItem('pseudo'));
                 }
             });
         }
+        setTimeout(function () {
+            $('.alert').remove();
+        }, 5000);
     });
 });

@@ -1,14 +1,20 @@
+html,
+body {
+    height: 100%;
+    margin: 0
+}
+
 #creer {
     position: absolute;
     right: 5%
 }
 
-.error{
-    height: 10px;
-    color: black;
-    border: 1px solid red
-}
-
 .btn {
     font-size: 13px
+}
+
+.baniere {
+    height: 15%;
+    background-color: dimgray;
+    margin-bottom: 5%
 }
