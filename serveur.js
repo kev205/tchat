@@ -62,6 +62,9 @@ io.on('connection', (client) => {
     person: user.pseudo,
     msg: 'bienvenue'
   });
+  client.on('disconnect', ()=>{
+    io.emit('user quit');
+  });
 });
 
 /** ecout sur localhost:8080 */
