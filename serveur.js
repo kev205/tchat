@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
           pseudo: result[0].PSEUDO
         };
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
-      } else res.sendFile(path.join(__dirname, '/views/connection.html'));
+      } else res.sendFile(path.join(__dirname, 'views/connection.html'));
     });
   })
   .get('/sign', (req, res) => {
@@ -44,13 +44,13 @@ app.get('/', (req, res) => {
   })
   .get('*', (req, res) => {
     res.status(404);
-    res.sendFile(path.join(__dirname, '/views/404.html'));
+    res.sendFile(path.join(__dirname, 'views/404.html'));
   })
   .post('/sign', (req, res) => {
     db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
-        res.sendFile(path.join(__dirname, '/views/signIn.html'));
+        res.sendFile(path.join(__dirname, 'views/signIn.html'));
         return;
       }
       user = {

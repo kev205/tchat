@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var socket = io.connect('/');
   socket.on('chat', function (data) {
-    alert('bienvenue mr ' + data.person);
+    alert('salut ' + data.person + ' !');
   });
   socket.on('user quit', function () {
     alert('quelqu\'un est parti');

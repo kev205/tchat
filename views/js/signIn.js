@@ -5,9 +5,24 @@ $(document).ready(function () {
         window.location = '/';
     });
     $('#creer').on('click', function () {
-        var test = $('#pseudo').val() | $('#password').val();
-        if (test == '') {
+        var vide = false;
+        for (var i = 0; i < $('.form-control').length; i++) {
+            if ($('.form-control').eq(i).val() == '') {
+                vide = true;
+                break;
+            }
+        }
+        if (vide) {
             alert('aucn champ ne doit etre vide');
+            $.ajax({
+                url: '/sign',
+                type: 'GET',
+                dataType: 'html',
+                async: false,
+                success: function (data) {
+                    $('body').html(data);
+                }
+            });
         } else {
             $.ajax({
                 url: '/sign',
@@ -23,11 +38,11 @@ $(document).ready(function () {
                     if (error) {
                         switch (error) {
                             case '1062':
-                                $('.error').html('Le numero est deja utilise');
                                 alert('Le numero est deja utilise');
                                 break;
                         }
                     }
+                    $('body').html(data);
                 }
             });
         }
