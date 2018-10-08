@@ -1,5 +1,5 @@
 /** importation des librairies */
-var  path = require('path'),
+var path = require('path'),
   express = require('express'),
   bodyParser = require('body-parser'),
   app = express(),
@@ -28,32 +28,36 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/connection.html'));
 })
   .post('/connection', (req, res) => {
-    db.query('SELECT * FROM user WHERE LOGIN = \'' + req.body.LOGIN + '\' AND PASSWD = \'' + req.body.PSSWD + '\' LIMIT 1', (error, result) => {
+    db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' LIMIT 1', (error, result) => {
       if (error)
         throw error;
       if (result.length != 0) {
         user = {
-          pseudo: result[0].LOGIN
+          pseudo: result[0].PSEUDO
         };
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
       } else res.sendFile(path.join(__dirname, '/views/connection.html'));
     });
   })
-  .post('/sign', (req, res) => {
-    db.query('INSERT INTO user(LOGIN, PASSWD) VALUES(\'' + req.body.LOGIN + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
-      if (error) {
-        res.sendFile(path.join(__dirname, '/views/connection.html'));
-        return;
-      }
-      user = {
-        pseudo: req.body.LOGIN
-      };
-      res.sendFile(path.join(__dirname, 'views/welcome.html'));
-    });
+  .get('/sign', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
   .get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname, '/views/404.html'));
+  })
+  .post('/sign', (req, res) => {
+    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
+      if (error) {
+        res.setHeader('sign-in-error', error.errno);
+        res.sendFile(path.join(__dirname, '/views/signIn.html'));
+        return;
+      }
+      user = {
+        pseudo: req.body.PSEUDO
+      };
+      res.sendFile(path.join(__dirname, 'views/welcome.html'));
+    });
   });
 
 /** socket de connexion avec le client */
@@ -62,7 +66,7 @@ io.on('connection', (client) => {
     person: user.pseudo,
     msg: 'bienvenue'
   });
-  client.on('disconnect', ()=>{
+  client.on('disconnect', () => {
     io.emit('user quit');
   });
 });

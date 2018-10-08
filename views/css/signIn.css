@@ -1,0 +1,14 @@
+#creer {
+    position: absolute;
+    right: 5%
+}
+
+.error{
+    height: 10px;
+    color: black;
+    border: 1px solid red
+}
+
+.btn {
+    font-size: 13px
+}

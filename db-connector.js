@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'agenda'
+  database: 'tchat'
 });
 connection.connect((error) => {
   if (error)
