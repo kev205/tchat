@@ -15,7 +15,7 @@ $(document).ready(function () {
   });
   $('#creer').on('click', function () {
     $.ajax({
-      url: '/sign',
+      url: '/signIn',
       type: 'GET',
       dataType: 'html',
       async: false,

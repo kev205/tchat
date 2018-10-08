@@ -15,7 +15,7 @@ $(document).ready(function () {
         if (vide) {
             alert('aucn champ ne doit etre vide');
             $.ajax({
-                url: '/sign',
+                url: '/signIn',
                 type: 'GET',
                 dataType: 'html',
                 async: false,
