@@ -39,14 +39,14 @@ app.get('/', (req, res) => {
       } else res.sendFile(path.join(__dirname, 'views/connection.html'));
     });
   })
-  .get('/sign', (req, res) => {
+  .get('/signIn', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
   .get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname, 'views/404.html'));
   })
-  .post('/sign', (req, res) => {
+  .post('/signIn', (req, res) => {
     db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
