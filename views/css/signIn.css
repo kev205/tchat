@@ -15,6 +15,7 @@ body {
 
 .baniere {
     height: 15%;
+    width: 100%;
     background-color: dimgray;
     margin-bottom: 5%
 }
