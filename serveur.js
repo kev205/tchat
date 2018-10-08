@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/404.html'));
   })
   .post('/sign', (req, res) => {
-    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error, result) => {
+    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
         res.sendFile(path.join(__dirname, 'views/signIn.html'));
