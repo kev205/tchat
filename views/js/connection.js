@@ -12,7 +12,7 @@ $(document).ready(function () {
       success: function (data, status, response) {
         $('body').html(data);
         if (response.getResponseHeader('sign-in') === 'failed') {
-          $('.container:eq(0)').append('<br>').append($('<div class="alert alert-danger"></div>').html('<center>Numero ou mot de passe incorrect</center>'));
+          $('.container:eq(0)').append('<br>').append($('<div class="alert alert-danger"></div>').html('<center>Connexion impossible</center>'));
           $('#phone').val(localStorage.getItem('tel'));
         }
       }

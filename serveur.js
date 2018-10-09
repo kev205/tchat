@@ -25,15 +25,17 @@ var user = {};
 
 /** traitement des routes/requete utilisateurs */
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/connection.html'));
-})
+    res.sendFile(path.join(__dirname, 'views/connection.html'));
+  })
   .post('/connection', (req, res) => {
-    db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' LIMIT 1', (error, result) => {
+    db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' AND CONNECT = 0 LIMIT 1', (error, result) => {
       if (error)
         throw error;
       if (result.length != 0) {
+        db.query('UPDATE utilisateur SET CONNECT = 1 WHERE TEL = \'' + req.body.TEL + '\'');
         user = {
-          pseudo: result[0].PSEUDO
+          pseudo: result[0].PSEUDO,
+          tel: result[0].TEL
         };
         res.setHeader('sign-in', 'succes');
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
@@ -45,6 +47,10 @@ app.get('/', (req, res) => {
   })
   .get('/signIn', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
+  })
+  .get('/save', (req, res) => {
+    res.status(404);
+    res.sendFile(path.join(__dirname, 'views/save.html'));
   })
   .get('*', (req, res) => {
     res.status(404);
@@ -58,20 +64,35 @@ app.get('/', (req, res) => {
         return;
       }
       user = {
-        pseudo: req.body.PSEUDO
+        pseudo: req.body.PSEUDO,
+        tel: req.body.TEL
       };
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
   });
 
 /** socket de connexion avec le client */
+var User = function (tel, login) {
+  this.LOGIN = login;
+  this.TEL = tel;
+};
+var allUser = [];
 io.on('connection', (client) => {
-  client.emit('chat', {
-    person: user.pseudo,
-    msg: 'bienvenue'
+  var inComme = new User(user.tel, user.pseudo);
+  allUser.push({
+    USER: inComme,
+    SOCKET: client
   });
+  client.emit('chat', inComme);
   client.on('disconnect', () => {
-    io.emit('user quit');
+    var iterator;
+    for (iterator of allUser) {
+      if (iterator.SOCKET === client) {
+        db.query('UPDATE utilisateur SET CONNECT = 0 WHERE TEL = \'' + iterator.USER.TEL + '\'');
+        break;
+      }
+    }
+    io.emit('user quit', iterator.USER);
   });
 });
 
