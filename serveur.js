@@ -25,8 +25,8 @@ var user = {};
 
 /** traitement des routes/requete utilisateurs */
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/connection.html'));
-  })
+  res.sendFile(path.join(__dirname, 'views/connection.html'));
+})
   .post('/connection', (req, res) => {
     db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' AND CONNECT = 0 LIMIT 1', (error, result) => {
       if (error)
@@ -77,6 +77,7 @@ var User = function (tel, login) {
   this.TEL = tel;
 };
 var allUser = [];
+var iterator;
 io.on('connection', (client) => {
   var inComme = new User(user.tel, user.pseudo);
   allUser.push({
@@ -85,7 +86,6 @@ io.on('connection', (client) => {
   });
   client.emit('chat', inComme);
   client.on('disconnect', () => {
-    var iterator;
     for (iterator of allUser) {
       if (iterator.SOCKET === client) {
         db.query('UPDATE utilisateur SET CONNECT = 0 WHERE TEL = \'' + iterator.USER.TEL + '\'');
@@ -93,7 +93,21 @@ io.on('connection', (client) => {
       }
     }
     io.emit('user quit', iterator.USER);
-  });
+  })
+    .on('save', function (data) {
+      db.query('SELECT * FROM utilisateur WHERE TEL = \'' + data.TEL + '\' LIMIT 1 ', (error, result) => {
+        if (error)
+          throw error;
+        if (result.length != 0) {
+          for (iterator of allUser) {
+            if (iterator.SOCKET === client) {
+              db.query('INSERT INTO enregistrer (TEL, TEL_1, DATE) VALUES (\'' + iterator.USER.TEL + '\', \'' + data.TEL + '\', CURRENT_DATE())');
+              break;
+            }
+          }
+        }
+      });
+    });
 });
 
 /** ecout sur localhost:8080 */
