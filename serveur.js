@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 
 /** utilisateur connecte */
 var user = {};
+var allUser = [];
 
 /** traitement des routes/requete utilisateurs */
 app.get('/', (req, res) => {
@@ -48,9 +49,12 @@ app.get('/', (req, res) => {
   .get('/signIn', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
-  .get('/save', (req, res) => {
-    res.status(404);
-    res.sendFile(path.join(__dirname, 'views/save.html'));
+  .get('/connected', (req, res) => {
+    db.query('SELECT DISTINCT PSEUDO FROM utilisateur WHERE CONNECT = 1', (error, result) => {
+      if (error)
+        throw error;
+      res.send(JSON.stringify(result));
+    });
   })
   .get('*', (req, res) => {
     res.status(404);
@@ -76,7 +80,6 @@ var User = function (tel, login) {
   this.LOGIN = login;
   this.TEL = tel;
 };
-var allUser = [];
 var iterator;
 io.on('connection', (client) => {
   var inComme = new User(user.tel, user.pseudo);
@@ -84,6 +87,7 @@ io.on('connection', (client) => {
     USER: inComme,
     SOCKET: client
   });
+  io.emit('connected');
   client.emit('chat', inComme);
   client.on('disconnect', () => {
     for (iterator of allUser) {
@@ -92,22 +96,8 @@ io.on('connection', (client) => {
         break;
       }
     }
-    io.emit('user quit', iterator.USER);
-  })
-    .on('save', function (data) {
-      db.query('SELECT * FROM utilisateur WHERE TEL = \'' + data.TEL + '\' LIMIT 1 ', (error, result) => {
-        if (error)
-          throw error;
-        if (result.length != 0) {
-          for (iterator of allUser) {
-            if (iterator.SOCKET === client) {
-              db.query('INSERT INTO enregistrer (TEL, TEL_1, DATE) VALUES (\'' + iterator.USER.TEL + '\', \'' + data.TEL + '\', CURRENT_DATE())');
-              break;
-            }
-          }
-        }
-      });
-    });
+    io.emit('user quit');
+  });
 });
 
 /** ecout sur localhost:8080 */

@@ -1,21 +1,28 @@
 $(document).ready(function () {
   var socket = io.connect('/');
-  socket.on('chat', function (data) {
-    alert('salut ' + data.LOGIN + ' !');
+  socket.on('connected', function () {
+    getConnected();
   })
-    .on('user quit', function (data) {
-      alert(data.LOGIN + ' est parti');
+    .on('chat', function (data) {
+      alert('salut ' + data.LOGIN + ' !');
+    })
+    .on('user quit', function () {
+      getConnected();
     });
-  socket.emit('save', {
-    TEL: '698315004'
-  });
-  $('.nav-item').on('click', function () {
-    for (var i = 0; i < $('.nav-item').length; i++) {
-      $('.nav-item').eq(i).attr('class', 'nav-item');
-    }
-    $(this).attr('class', $(this).attr('class') + ' active');
-  });
-  $('.navbar-brand').on('click', function () {
-    socket.disconnect();
-  });
+
+  function getConnected() {
+    $.ajax({
+      url: '/connected',
+      type: 'GET',
+      dataType: 'JSON',
+      async: true,
+      success: function (data) {
+        var chaine = '';
+        for (var i = 0; i < data.length; i++) {
+          chaine += data[i].PSEUDO + ' , ';
+        }
+        alert(chaine);
+      }
+    });
+  }
 });
