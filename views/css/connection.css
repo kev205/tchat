@@ -3,6 +3,15 @@ html, body {
     margin: 0
 }
 
+.nav {
+    width: 10%;
+    background-color: green
+}
+
+.user {
+    display: inline-block
+}
+
 .form-control {
     border: 1px solid transparent;
     border-bottom-color: gray

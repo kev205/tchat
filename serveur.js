@@ -14,7 +14,7 @@ app.use('/static', [express.static('views/js'),
   express.static('node_modules/bootstrap/dist/js'),
   express.static('node_modules/jquery/dist'),
   express.static('node_modules/socket.io-client/dist'),
-  express.static('serveur/images')
+  express.static('images')
 ]);
 app.use(bodyParser.urlencoded({
   extended: true
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
   .get('/connected', (req, res) => {
-    db.query('SELECT DISTINCT PSEUDO, TEL FROM utilisateur WHERE CONNECT = 1', (error, result) => {
+    db.query('SELECT DISTINCT PSEUDO, TEL, CONNECT FROM utilisateur', (error, result) => {
       if (error)
         throw error;
       res.send(JSON.stringify(result));
@@ -84,6 +84,7 @@ var Connected = function (tel, login) {
 var iterator;
 io.on('connection', (client) => {
   var inComme = new Connected(user.tel, user.pseudo);
+  client.emit('welcome', inComme);
   allUser.push({
     USER: inComme,
     SOCKET: client
