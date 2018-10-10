@@ -1,8 +1,8 @@
 $(document).ready(function () {
   var socket = io.connect('/');
   socket.on('user connect', function () {
-    getConnected(populate_connected_list);
-  })
+      getConnected(populate_connected_list);
+    })
     .on('user quit', function () {
       getConnected(populate_connected_list);
     });
@@ -20,6 +20,8 @@ $(document).ready(function () {
   }
 
   function populate_connected_list(connected_list) {
+    $('.nav:eq(0)').remove();
+    $('.container:eq(0)').append($('<ul class="nav flex-column"></ul>'));
     for (var i = 0; i < connected_list.length; i++) {
       if ($('#' + connected_list[i].TEL).length == 0) {
         $('.nav:eq(0)').append($('<li class="nav-item"></li>').attr('id', connected_list[i].TEL));
