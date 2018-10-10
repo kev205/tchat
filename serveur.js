@@ -13,7 +13,8 @@ app.use('/static', [express.static('views/js'),
   express.static('node_modules/bootstrap/dist/css'),
   express.static('node_modules/bootstrap/dist/js'),
   express.static('node_modules/jquery/dist'),
-  express.static('node_modules/socket.io-client/dist')
+  express.static('node_modules/socket.io-client/dist'),
+  express.static('serveur/images')
 ]);
 app.use(bodyParser.urlencoded({
   extended: true
@@ -32,7 +33,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
   .get('/connected', (req, res) => {
-    db.query('SELECT DISTINCT PSEUDO FROM utilisateur WHERE CONNECT = 1', (error, result) => {
+    db.query('SELECT DISTINCT PSEUDO, TEL FROM utilisateur WHERE CONNECT = 1', (error, result) => {
       if (error)
         throw error;
       res.send(JSON.stringify(result));

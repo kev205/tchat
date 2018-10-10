@@ -20,10 +20,11 @@ $(document).ready(function () {
   }
 
   function populate_connected_list(connected_list) {
-    var chaine = '';
     for (var i = 0; i < connected_list.length; i++) {
-      chaine += connected_list[i].PSEUDO + ' , ';
+      if ($('#' + connected_list[i].TEL).length == 0) {
+        $('.nav:eq(0)').append($('<li class="nav-item"></li>').attr('id', connected_list[i].TEL));
+        $('#' + connected_list[i].TEL).append($('<a class="nav-link"></a>').attr('href', '#').html(connected_list[i].PSEUDO + '<br>'));
+      }
     }
-    alert(chaine);
   }
 });
