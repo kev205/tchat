@@ -87,7 +87,7 @@ io.on('connection', (client) => {
     USER: inComme,
     SOCKET: client
   });
-  io.emit('connected');
+  io.emit('user connect');
   client.on('disconnect', () => {
     for (iterator of allUser) {
       if (iterator.SOCKET === client) {

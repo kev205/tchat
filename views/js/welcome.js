@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var socket = io.connect('/');
-  socket.on('connected', function () {
+  socket.on('user connect', function () {
     getConnected(populate_connected_list);
   })
     .on('user quit', function () {
