@@ -1,28 +1,29 @@
 $(document).ready(function () {
   var socket = io.connect('/');
   socket.on('connected', function () {
-    getConnected();
+    getConnected(populate_connected_list);
   })
-    .on('chat', function (data) {
-      alert('salut ' + data.LOGIN + ' !');
-    })
     .on('user quit', function () {
-      getConnected();
+      getConnected(populate_connected_list);
     });
 
-  function getConnected() {
+  function getConnected(callback) {
     $.ajax({
       url: '/connected',
       type: 'GET',
       dataType: 'JSON',
       async: true,
       success: function (data) {
-        var chaine = '';
-        for (var i = 0; i < data.length; i++) {
-          chaine += data[i].PSEUDO + ' , ';
-        }
-        alert(chaine);
+        callback(data);
       }
     });
+  }
+
+  function populate_connected_list(connected_list){
+    var chaine = '';
+    for (var i = 0; i < connected_list.length; i++) {
+      chaine += connected_list[i].PSEUDO + ' , ';
+    }
+    alert(chaine);
   }
 });

@@ -4,7 +4,7 @@ $(document).ready(function () {
   $('#connect').on('click', function () {
     localStorage.setItem('tel', $('#phone').val());
     $.ajax({
-      url: '/connection',
+      url: '/logIn',
       type: 'POST',
       dataType: 'html',
       data: 'TEL=' + $('#phone').val() + '&PSSWD=' + $('#password').val(),

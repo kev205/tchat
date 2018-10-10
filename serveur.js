@@ -28,7 +28,21 @@ var allUser = [];
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/connection.html'));
 })
-  .post('/connection', (req, res) => {
+  .get('/signIn', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/signIn.html'));
+  })
+  .get('/connected', (req, res) => {
+    db.query('SELECT DISTINCT PSEUDO FROM utilisateur WHERE CONNECT = 1', (error, result) => {
+      if (error)
+        throw error;
+      res.send(JSON.stringify(result));
+    });
+  })
+  .get('*', (req, res) => {
+    res.status(404);
+    res.sendFile(path.join(__dirname, 'views/404.html'));
+  })
+  .post('/logIn', (req, res) => {
     db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' AND CONNECT = 0 LIMIT 1', (error, result) => {
       if (error)
         throw error;
@@ -45,20 +59,6 @@ app.get('/', (req, res) => {
         res.sendFile(path.join(__dirname, 'views/connection.html'));
       }
     });
-  })
-  .get('/signIn', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/signIn.html'));
-  })
-  .get('/connected', (req, res) => {
-    db.query('SELECT DISTINCT PSEUDO FROM utilisateur WHERE CONNECT = 1', (error, result) => {
-      if (error)
-        throw error;
-      res.send(JSON.stringify(result));
-    });
-  })
-  .get('*', (req, res) => {
-    res.status(404);
-    res.sendFile(path.join(__dirname, 'views/404.html'));
   })
   .post('/signIn', (req, res) => {
     db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error) => {
@@ -88,7 +88,6 @@ io.on('connection', (client) => {
     SOCKET: client
   });
   io.emit('connected');
-  client.emit('chat', inComme);
   client.on('disconnect', () => {
     for (iterator of allUser) {
       if (iterator.SOCKET === client) {
