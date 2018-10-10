@@ -19,7 +19,7 @@ $(document).ready(function () {
     });
   }
 
-  function populate_connected_list(connected_list){
+  function populate_connected_list(connected_list) {
     var chaine = '';
     for (var i = 0; i < connected_list.length; i++) {
       chaine += connected_list[i].PSEUDO + ' , ';

@@ -4,6 +4,15 @@ body {
     margin: 0
 }
 
+.form-control {
+    border: 1px solid transparent;
+    border-bottom-color: gray
+}
+
+.form-control:focus {
+    border: none;
+}
+
 #creer {
     position: absolute;
     right: 5%

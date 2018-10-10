@@ -76,13 +76,13 @@ app.get('/', (req, res) => {
   });
 
 /** socket de connexion avec le client */
-var User = function (tel, login) {
+var Connected = function (tel, login) {
   this.LOGIN = login;
   this.TEL = tel;
 };
 var iterator;
 io.on('connection', (client) => {
-  var inComme = new User(user.tel, user.pseudo);
+  var inComme = new Connected(user.tel, user.pseudo);
   allUser.push({
     USER: inComme,
     SOCKET: client
