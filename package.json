@@ -1,10 +1,10 @@
 {
   "name": "com.kevin.projet.chat",
   "version": "1.0.0",
-  "description": "application de chat evolue",
+  "description": "application de chat",
   "main": "serveur.js",
   "scripts": {
-    "test": "echo hello",
+    "test": "echo wlecome on Tchat",
     "start": "node serveur.js"
   },
   "repository": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/kev205/kev_depot.git"
   },
   "keywords": [
-    "agenda"
+    "Tchat"
   ],
   "author": {
     "name": "cod Team",
