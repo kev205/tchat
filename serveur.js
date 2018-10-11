@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
   .get('/connected', (req, res) => {
-    db.query('SELECT DISTINCT PSEUDO, TEL, CONNECT FROM utilisateur', (error, result) => {
+    db.query('SELECT DISTINCT PSEUDO, TEL, CONNECT FROM utilisateur ORDER BY PSEUDO', (error, result) => {
       if (error)
         throw error;
       res.send(JSON.stringify(result));

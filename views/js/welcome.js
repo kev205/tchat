@@ -30,7 +30,7 @@ $(document).ready(function () {
       if (connected_list[i].PSEUDO !== LOGIN) {
         if ($('#' + connected_list[i].TEL).length == 0) {
           $('.nav:eq(0)').append($('<li class="nav-item"></li>').attr('id', connected_list[i].TEL));
-          $('#' + connected_list[i].TEL).append($('<span class="user"><span>').html(connected_list[i].PSEUDO + '<br>'));
+          $('#' + connected_list[i].TEL).append($('<a class="nav-link"></a>').attr('href', '#').html(connected_list[i].PSEUDO + '<br>'));
           if (connected_list[i].CONNECT === 1) {
             $('#' + connected_list[i].TEL).append($('<img class="state">').attr('src', '/static/connect.png'));
           } else {
