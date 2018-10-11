@@ -1,8 +1,10 @@
+var LOGIN;
+
 $(document).ready(function () {
   var socket = io.connect('/');
-  var LOGIN;
   socket.on('welcome', function (data) {
     LOGIN = data.LOGIN;
+    localStorage.setItem('tel', data.TEL);
   })
     .on('user connect', function () {
       getConnected(populate_connected_list);

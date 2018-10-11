@@ -3,7 +3,7 @@ html, body {
     margin: 0
 }
 
-.nav {
+.nav:first {
     width: 10%;
     background-color: green
 }

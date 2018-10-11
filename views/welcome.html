@@ -1,11 +1,36 @@
 <body>
     <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#data"></button>
-            <a class="navbar-brand" href="#">Liste des utilisateurs</a>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#connected">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Liste des utilisateurs</a>
+            </div>
+            <div class="collapse navbar-collapse" id="connected">
+                <ul class="nav navbar-nav"></ul>
+            </div>
         </div>
-        <div class="collapse navbar-collapse navbar-expand-lg" id="data">
-            <ul class="nav navbar-nav"></ul>
+    </nav>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/groupe">Creer groupe</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
     <script type="text/javascript" src="/static/jquery.min.js"></script>

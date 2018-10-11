@@ -39,6 +39,9 @@ app.get('/', (req, res) => {
       res.send(JSON.stringify(result));
     });
   })
+  .get('/groupe', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/groupe.html'));
+  })
   .get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname, 'views/404.html'));
@@ -62,7 +65,7 @@ app.get('/', (req, res) => {
     });
   })
   .post('/signIn', (req, res) => {
-    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\')', (error) => {
+    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\', CURRENT_DATE())', (error) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
         res.sendFile(path.join(__dirname, 'views/signIn.html'));
@@ -72,6 +75,11 @@ app.get('/', (req, res) => {
         pseudo: req.body.PSEUDO,
         tel: req.body.TEL
       };
+      res.sendFile(path.join(__dirname, 'views/welcome.html'));
+    });
+  })
+  .post('/groupe', (req, res) => {
+    db.query('INSERT INTO groupe(TEL, NOM, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.NAME + '\', CURRENT_DATE())', (error) => {
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
   });
