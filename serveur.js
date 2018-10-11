@@ -8,7 +8,8 @@ var path = require('path'),
   db = require('./db-connector');
 
 /** definition des middlewares */
-app.use('/static', [express.static('views/js'),
+app.use('/static', [express.static('views'),
+  express.static('views/js'),
   express.static('views/css'),
   express.static('node_modules/bootstrap/dist/css'),
   express.static('node_modules/bootstrap/dist/js'),
@@ -29,6 +30,9 @@ var allUser = [];
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/connection.html'));
 })
+  .get('/welcome', (req, res) => {
+    
+  })
   .get('/signIn', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
@@ -42,10 +46,6 @@ app.get('/', (req, res) => {
   .get('/groupe', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/groupe.html'));
   })
-  .get('*', (req, res) => {
-    res.status(404);
-    res.sendFile(path.join(__dirname, 'views/404.html'));
-  })
   .post('/logIn', (req, res) => {
     db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' AND CONNECT = 0 LIMIT 1', (error, result) => {
       if (error)
@@ -57,7 +57,8 @@ app.get('/', (req, res) => {
           tel: result[0].TEL
         };
         res.setHeader('sign-in', 'succes');
-        res.sendFile(path.join(__dirname, 'views/welcome.html'));
+        res.send('/welcome');
+        // res.sendFile(path.join(__dirname, 'views/welcome.html'));
       } else {
         res.setHeader('sign-in', 'failed');
         res.sendFile(path.join(__dirname, 'views/connection.html'));
@@ -82,6 +83,10 @@ app.get('/', (req, res) => {
     db.query('INSERT INTO groupe(TEL, NOM, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.NAME + '\', CURRENT_DATE())', (error) => {
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
+  })
+  .get('*', (req, res) => {
+    res.status(404);
+    res.sendFile(path.join(__dirname, 'views/404.html'));
   });
 
 /** socket de connexion avec le client */
