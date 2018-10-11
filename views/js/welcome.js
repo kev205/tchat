@@ -25,7 +25,7 @@ $(document).ready(function () {
 
   function populate_connected_list(connected_list) {
     $('.nav:eq(0)').remove();
-    $('.status:eq(0)').append($('<ul class="nav flex-column"></ul>'));
+    $('.collapse:eq(0)').append($('<ul class="nav navbar-nav"></ul>'));
     for (var i = 0; i < connected_list.length; i++) {
       if (connected_list[i].PSEUDO !== LOGIN) {
         if ($('#' + connected_list[i].TEL).length == 0) {

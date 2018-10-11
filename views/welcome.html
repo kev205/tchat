@@ -1,7 +1,13 @@
 <body>
-    <div class="status">
-        <ul class="nav flex-column"></ul>
-    </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#data"></button>
+            <a class="navbar-brand" href="#">Liste des utilisateurs</a>
+        </div>
+        <div class="collapse navbar-collapse" id="data">
+            <ul class="nav navbar-nav"></ul>
+        </div>
+    </nav>
     <script type="text/javascript" src="/static/jquery.min.js"></script>
     <script type="text/javascript" src="/static/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/socket.io.js"></script>
