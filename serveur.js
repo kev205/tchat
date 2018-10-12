@@ -36,7 +36,6 @@ app.use(session({
 
 
 /** utilisateur connecte */
-var CONNECT;
 var user = {};
 var allUser = [];
 
@@ -52,7 +51,6 @@ var isConnected = (req, res, next) => {
 
 app.route('/')
   .get(isConnected, (req, res) => {
-    CONNECT = true;
     res.sendFile(path.join(__dirname, 'views/welcome.html'));
   })
   .post((req, res) => {
@@ -65,8 +63,9 @@ app.route('/')
           pseudo: result[0].PSEUDO,
           tel: result[0].TEL
         };
-        CONNECT = false;
         req.session.user = user;
+        res.cookie('pseudo', user.pseudo);
+        res.cookie('tel', user.tel);
         res.setHeader('sign-in', 'succes');
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
       } else {
@@ -91,8 +90,9 @@ app.route('/signIn')
         pseudo: req.body.PSEUDO,
         tel: req.body.TEL
       };
-      CONNECT = false;
       req.session.user = user;
+      res.cookie('pseudo', encodeURIComponent(user.pseudo));
+      res.cookie('tel', encodeURIComponent(user.tel));
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
   });
@@ -140,9 +140,7 @@ io.on('connection', (client) => {
     USER: inComme,
     SOCKET: client
   });
-  if(!CONNECT)
-    io.emit('new connection');
-  else io.emit('user connect');
+  io.emit('user connect');
 });
 
 /** ecout sur 192.168.173.1:1111 */
