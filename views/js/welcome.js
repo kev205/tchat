@@ -8,15 +8,7 @@ $(document).ready(function () {
   })
     .on('user connect', function () {
       getConnected(populate_connected_list);
-    })
-    .on('user quit', function () {
-      getConnected(populate_connected_list);
     });
-
-  $('.nav-item:eq(1)').on('click', function(){
-    document.cookie = 'user_tel=;expires=Thu, 01 Jan 1970 00:00:00 UTC';
-    document.cookie = 'user_pseudo=;expires=Thu, 01 Jan 1970 00:00:00 UTC';
-  });
 
   function getConnected(callback) {
     $.ajax({
