@@ -28,7 +28,7 @@ app.use(session({
   key: 'session_id',
   secret: 'abcxyz',
   cookie: {
-    expires: 60000 * 360
+    expires: 60*60*24*7
   },
   resave: true,
   saveUninitialized: true
