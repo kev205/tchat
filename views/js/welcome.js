@@ -7,8 +7,10 @@ $(document).ready(function () {
     localStorage.setItem('tel', data.TEL);
   })
     .on('user connect', function () {
+      localStorage.clear();
       getConnected(populate_connected_list);
     });
+  populate_connected_list(JSON.parse(localStorage.getItem('connected')));
 
   function getConnected(callback) {
     $.ajax({
@@ -17,6 +19,7 @@ $(document).ready(function () {
       dataType: 'JSON',
       async: true,
       success: function (data) {
+        localStorage.setItem('connected', JSON.stringify(data));
         callback(data);
       }
     });

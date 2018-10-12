@@ -36,6 +36,7 @@ app.use(session({
 
 
 /** utilisateur connecte */
+var CONNECT;
 var user = {};
 var allUser = [];
 
@@ -51,6 +52,7 @@ var isConnected = (req, res, next) => {
 
 app.route('/')
   .get(isConnected, (req, res) => {
+    CONNECT = true;
     res.sendFile(path.join(__dirname, 'views/welcome.html'));
   })
   .post((req, res) => {
@@ -61,9 +63,9 @@ app.route('/')
         db.query('UPDATE utilisateur SET CONNECT = 1 WHERE TEL = \'' + req.body.TEL + '\'');
         user = {
           pseudo: result[0].PSEUDO,
-          tel: result[0].TEL,
-          connect: 1
+          tel: result[0].TEL
         };
+        CONNECT = false;
         req.session.user = user;
         res.setHeader('sign-in', 'succes');
         res.sendFile(path.join(__dirname, 'views/welcome.html'));
@@ -87,9 +89,9 @@ app.route('/signIn')
       }
       user = {
         pseudo: req.body.PSEUDO,
-        tel: req.body.TEL,
-        connect: 1
+        tel: req.body.TEL
       };
+      CONNECT = false;
       req.session.user = user;
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
@@ -138,7 +140,8 @@ io.on('connection', (client) => {
     USER: inComme,
     SOCKET: client
   });
-  io.emit('user connect');
+  if(!CONNECT)
+    io.emit('user connect');
 });
 
 /** ecout sur 192.168.173.1:1111 */
