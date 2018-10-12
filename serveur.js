@@ -2,6 +2,8 @@
 var path = require('path'),
   express = require('express'),
   bodyParser = require('body-parser'),
+  cookieParser = require('cookie-parser'),
+  session = require('express-session'),
   app = express(),
   server = require('http').createServer(app), //creation du serveur
   io = require('socket.io')(server),
@@ -21,32 +23,37 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(session({
+  key: 'session_id',
+  secret: 'abcxyz',
+  cookie: {
+    expires: 60000 * 360
+  },
+  resave: true,
+  saveUninitialized: true
+}));
+
 
 /** utilisateur connecte */
 var user = {};
 var allUser = [];
 
+/** verifier la connexion d'un utilisateur */
+
+var isConnected = (req, res, next) => {
+  if (req.session.user && req.cookies.session_id) {
+    return next();
+  } else res.sendFile(path.join(__dirname, 'views/connection.html'));
+};
+
 /** traitement des routes/requete utilisateurs */
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/connection.html'));
-})
-  .get('/welcome', (req, res) => {
-    
+
+app.route('/')
+  .get(isConnected, (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/welcome.html'));
   })
-  .get('/signIn', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/signIn.html'));
-  })
-  .get('/connected', (req, res) => {
-    db.query('SELECT DISTINCT PSEUDO, TEL, CONNECT FROM utilisateur ORDER BY PSEUDO', (error, result) => {
-      if (error)
-        throw error;
-      res.send(JSON.stringify(result));
-    });
-  })
-  .get('/groupe', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/groupe.html'));
-  })
-  .post('/logIn', (req, res) => {
+  .post((req, res) => {
     db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' AND CONNECT = 0 LIMIT 1', (error, result) => {
       if (error)
         throw error;
@@ -56,16 +63,22 @@ app.get('/', (req, res) => {
           pseudo: result[0].PSEUDO,
           tel: result[0].TEL
         };
+        req.session.user = user;
         res.setHeader('sign-in', 'succes');
-        res.send('/welcome');
+        res.sendFile(path.join(__dirname, 'views/welcome.html'));
         // res.sendFile(path.join(__dirname, 'views/welcome.html'));
       } else {
         res.setHeader('sign-in', 'failed');
         res.sendFile(path.join(__dirname, 'views/connection.html'));
       }
     });
+  });
+
+app.route('/signIn')
+  .get((req, res) => {
+    res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
-  .post('/signIn', (req, res) => {
+  .post((req, res) => {
     db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\', CURRENT_DATE())', (error) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
@@ -76,13 +89,30 @@ app.get('/', (req, res) => {
         pseudo: req.body.PSEUDO,
         tel: req.body.TEL
       };
+      req.session.user = user;
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
+  });
+
+app.route('/groupe')
+  .get(isConnected, (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/groupe.html'));
   })
-  .post('/groupe', (req, res) => {
+  .post((req, res) => {
     db.query('INSERT INTO groupe(TEL, NOM, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.NAME + '\', CURRENT_DATE())', (error) => {
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
+  });
+
+app.get('/connected', (req, res) => {
+  db.query('SELECT DISTINCT PSEUDO, TEL, CONNECT FROM utilisateur ORDER BY PSEUDO', (error, result) => {
+    if (error)
+      throw error;
+    res.send(JSON.stringify(result));
+  });
+})
+  .get('/groupe', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/groupe.html'));
   })
   .get('*', (req, res) => {
     res.status(404);
@@ -115,4 +145,4 @@ io.on('connection', (client) => {
 });
 
 /** ecout sur 192.168.173.1:1111 */
-server.listen(1111, '192.168.173.1');
+server.listen(1111);

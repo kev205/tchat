@@ -1,0 +1,21 @@
+html, body {
+    height: 100%;
+    margin: 0
+}
+
+.nav:first {
+    width: 10%;
+    background-color: green
+}
+
+.nav-link {
+    color: black;
+    display: inline-block
+}
+
+.baniere {
+    height: 15%;
+    width: 100%;
+    background-color: dimgray;
+    margin-bottom: 5%
+}
