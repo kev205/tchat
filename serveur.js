@@ -141,7 +141,8 @@ io.on('connection', (client) => {
     SOCKET: client
   });
   if(!CONNECT)
-    io.emit('user connect');
+    io.emit('new connection');
+  else io.emit('user connect');
 });
 
 /** ecout sur 192.168.173.1:1111 */

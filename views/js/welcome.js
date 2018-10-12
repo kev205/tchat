@@ -4,20 +4,23 @@ $(document).ready(function () {
   var socket = io.connect('/');
   socket.on('welcome', function (data) {
     LOGIN = data.LOGIN;
+    alert(LOGIN);
     localStorage.setItem('tel', data.TEL);
   })
+    .on('new connection', function(){
+      populate_connected_list(JSON.parse(localStorage.getItem('connected')));
+    })
     .on('user connect', function () {
-      localStorage.clear();
       getConnected(populate_connected_list);
     });
-  populate_connected_list(JSON.parse(localStorage.getItem('connected')));
 
   function getConnected(callback) {
+    localStorage.clear();
     $.ajax({
       url: '/connected',
       type: 'GET',
       dataType: 'JSON',
-      async: true,
+      async: false,
       success: function (data) {
         localStorage.setItem('connected', JSON.stringify(data));
         callback(data);
