@@ -25,7 +25,7 @@ app.use(session({
   key: 'session_id',
   secret: 'abcxyz',
   cookie: {
-    expires: 60*60*24
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
   },
   resave: true,
   saveUninitialized: true
@@ -64,10 +64,10 @@ app.route('/')
         };
         req.session.user = user;
         res.cookie('pseudo', encodeURIComponent(user.pseudo), {
-          expires: new Date(Date.now() + 60*60*24)
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
         res.cookie('tel', encodeURIComponent(user.tel), {
-          expires: new Date(Date.now() + 60*60*24)
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
         res.setHeader('sign-in', 'succes');
         res.render('welcome');
@@ -95,10 +95,10 @@ app.route('/signIn')
       };
       req.session.user = user;
       res.cookie('pseudo', encodeURIComponent(user.pseudo), {
-        expires: new Date(Date.now() + 60*60*24)
+        expires: new Date(Date.now() + 60 * 60 * 24)
       });
       res.cookie('tel', encodeURIComponent(user.tel), {
-        expires: new Date(Date.now() + 60*60*24)
+        expires: new Date(Date.now() + 60 * 60 * 24)
       });
       res.render('welcome');
     });
@@ -110,7 +110,7 @@ app.route('/groupe')
   })
   .post((req, res) => {
     db.query('INSERT INTO groupe(TEL, NOM, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.NAME + '\', CURRENT_DATE())', (error) => {
-      if(error)
+      if (error)
         throw error;
       res.render('welcome');
     });
@@ -123,7 +123,7 @@ app.get('/connected', (req, res) => {
     res.send(JSON.stringify(result));
   });
 })
-  .get('/quit', (req, res)=>{
+  .get('/quit', (req, res) => {
     db.query('UPDATE utilisateur SET CONNECT = 0 WHERE TEL = \'' + req.session.user.tel + '\'');
     req.session.user = undefined;
     res.redirect('/');
