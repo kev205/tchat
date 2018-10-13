@@ -1,6 +1,12 @@
 /* eslint-disable */
 
 $(document).ready(function () {
+
+    $('#image').on('change', function(){
+        var path = document.getElementById('image');
+        alert(window.URL.createObjectURL(path.files[0].name));
+    });
+
     $('#connect').on('click', function () {
         window.location = '/';
     });
