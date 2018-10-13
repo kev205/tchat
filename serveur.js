@@ -10,8 +10,6 @@ var express = require('express'),
 
 /** definition des middlewares */
 app.use('/static', [express.static('views'),
-  express.static('views/js'),
-  express.static('views/css'),
   express.static('node_modules/bootstrap/dist/css'),
   express.static('node_modules/bootstrap/dist/js'),
   express.static('node_modules/jquery/dist'),
