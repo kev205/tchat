@@ -4,13 +4,17 @@ body {
     margin: 0
 }
 
-.form-control {
-    border: 1px solid transparent;
+input:invalid{
+    border-bottom-color: red
+}
+
+input:valid{
     border-bottom-color: gray
 }
 
-.form-control:focus {
-    border: none;
+.form-control {
+    border: 1px solid transparent;
+    border-bottom-color: gray
 }
 
 #creer {
