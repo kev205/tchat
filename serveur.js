@@ -28,11 +28,13 @@ app.use(session({
   key: 'session_id',
   secret: 'abcxyz',
   cookie: {
-    expires: 60*60*24*7
+    expires: 60*60*24
   },
   resave: true,
   saveUninitialized: true
 }));
+
+app.set('view engine', 'ejs');
 
 
 /** utilisateur connecte */
@@ -44,14 +46,14 @@ var allUser = [];
 var isConnected = (req, res, next) => {
   if (req.session.user && req.cookies.session_id) {
     return next();
-  } else res.sendFile(path.join(__dirname, 'views/connection.html'));
+  } else res.render('connection');
 };
 
 /** traitement des routes/requete utilisateurs */
 
 app.route('/')
   .get(isConnected, (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/welcome.html'));
+    res.render('welcome');
   })
   .post((req, res) => {
     db.query('SELECT * FROM utilisateur WHERE TEL = \'' + req.body.TEL + '\' AND PSSWD = \'' + req.body.PSSWD + '\' AND CONNECT = 0 LIMIT 1', (error, result) => {
@@ -67,23 +69,23 @@ app.route('/')
         res.cookie('pseudo', user.pseudo);
         res.cookie('tel', user.tel);
         res.setHeader('sign-in', 'succes');
-        res.sendFile(path.join(__dirname, 'views/welcome.html'));
+        res.render('welcome');
       } else {
         res.setHeader('sign-in', 'failed');
-        res.sendFile(path.join(__dirname, 'views/connection.html'));
+        res.render('connection');
       }
     });
   });
 
 app.route('/signIn')
   .get((req, res) => {
-    res.sendFile(path.join(__dirname, 'views/signIn.html'));
+    res.render('signIn');
   })
   .post((req, res) => {
     db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD, CONNECT, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\', 1, CURRENT_DATE())', (error) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
-        res.sendFile(path.join(__dirname, 'views/signIn.html'));
+        res.render('signIn');
         return;
       }
       user = {
@@ -93,19 +95,19 @@ app.route('/signIn')
       req.session.user = user;
       res.cookie('pseudo', encodeURIComponent(user.pseudo));
       res.cookie('tel', encodeURIComponent(user.tel));
-      res.sendFile(path.join(__dirname, 'views/welcome.html'));
+      res.render('welcome');
     });
   });
 
 app.route('/groupe')
   .get(isConnected, (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/groupe.html'));
+    res.render('groupe');
   })
   .post((req, res) => {
     db.query('INSERT INTO groupe(TEL, NOM, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.NAME + '\', CURRENT_DATE())', (error) => {
       if(error)
         throw error;
-      res.sendFile(path.join(__dirname, 'views/welcome.html'));
+      res.render('welcome');
     });
   });
 
@@ -116,9 +118,6 @@ app.get('/connected', (req, res) => {
     res.send(JSON.stringify(result));
   });
 })
-  .get('/groupe', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views/groupe.html'));
-  })
   .get('/quit', (req, res)=>{
     db.query('UPDATE utilisateur SET CONNECT = 0 WHERE TEL = \'' + req.session.user.tel + '\'');
     req.session.user = undefined;
@@ -126,7 +125,7 @@ app.get('/connected', (req, res) => {
   })
   .get('*', (req, res) => {
     res.status(404);
-    res.sendFile(path.join(__dirname, 'views/404.html'));
+    res.render('404');
   });
 
 /** socket de connexion avec le client */
@@ -144,5 +143,5 @@ io.on('connection', (client) => {
   io.emit('user connect');
 });
 
-/** ecout sur 192.168.173.1:1111 */
+/** ecout sur localhost:1111 */
 server.listen(1111);
