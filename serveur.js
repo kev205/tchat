@@ -103,6 +103,8 @@ app.route('/groupe')
   })
   .post((req, res) => {
     db.query('INSERT INTO groupe(TEL, NOM, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.NAME + '\', CURRENT_DATE())', (error) => {
+      if(error)
+        throw error;
       res.sendFile(path.join(__dirname, 'views/welcome.html'));
     });
   });

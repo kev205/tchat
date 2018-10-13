@@ -13,12 +13,21 @@ $(document).ready(function () {
             },
             type: 'POST',
             dataType: 'text',
-            data: 'NAME=' + $('#name').val() + '&TEL=' + localStorage.getItem('tel'),
+            data: 'NAME=' + $('#name').val() + '&TEL=' + getCookie('tel'),
             async: false,
             success: function (data) {
                 $('body').html(data);
             },
         });
-        alert('fait');
     });
 });
+
+
+function getCookie(name) {
+    var regex = new RegExp('(?:; )?' + name + '=([^;]*);?');
+    if (regex.test(document.cookie)) {
+      return decodeURIComponent(RegExp.$1);
+    } else {
+      return null;
+    }
+  }
