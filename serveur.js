@@ -63,8 +63,12 @@ app.route('/')
           tel: result[0].TEL
         };
         req.session.user = user;
-        res.cookie('pseudo', user.pseudo);
-        res.cookie('tel', user.tel);
+        res.cookie('pseudo', encodeURIComponent(user.pseudo), {
+          expires: new Date(Date.now() + 60*60*24)
+        });
+        res.cookie('tel', encodeURIComponent(user.tel), {
+          expires: new Date(Date.now() + 60*60*24)
+        });
         res.setHeader('sign-in', 'succes');
         res.render('welcome');
       } else {
@@ -90,8 +94,12 @@ app.route('/signIn')
         tel: req.body.TEL
       };
       req.session.user = user;
-      res.cookie('pseudo', encodeURIComponent(user.pseudo));
-      res.cookie('tel', encodeURIComponent(user.tel));
+      res.cookie('pseudo', encodeURIComponent(user.pseudo), {
+        expires: new Date(Date.now() + 60*60*24)
+      });
+      res.cookie('tel', encodeURIComponent(user.tel), {
+        expires: new Date(Date.now() + 60*60*24)
+      });
       res.render('welcome');
     });
   });
