@@ -1,6 +1,5 @@
 /** importation des librairies */
-var path = require('path'),
-  express = require('express'),
+var express = require('express'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
