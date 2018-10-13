@@ -1,7 +1,7 @@
 var type = [
-  'image / jpg',
-  'image / pjpeg',
-  'image / png'
+  'image/jpg',
+  'image/pjpeg',
+  'image/png'
 ];
 
 function verifierType(file){

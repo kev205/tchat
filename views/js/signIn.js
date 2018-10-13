@@ -1,10 +1,9 @@
 /* eslint-disable */
 
 $(document).ready(function () {
-
+    var image;
     $('#image').on('change', function(){
-        var path = document.getElementById('image');
-        alert(window.URL.createObjectURL(path.files[0].name));
+        image = $(this).prop('files')[0];
     });
 
     $('#connect').on('click', function () {
