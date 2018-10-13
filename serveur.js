@@ -120,7 +120,6 @@ app.get('/connected', (req, res) => {
   .get('/quit', (req, res)=>{
     db.query('UPDATE utilisateur SET CONNECT = 0 WHERE TEL = \'' + req.session.user.tel + '\'');
     req.session.user = undefined;
-    req.cookies.session_id = undefined;
     res.redirect('/');
   })
   .get('*', (req, res) => {
