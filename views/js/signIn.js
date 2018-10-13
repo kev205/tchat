@@ -21,7 +21,7 @@ $(document).ready(function () {
             $('#phone').val(localStorage.getItem('tel'));
             $('#pseudo').val(localStorage.getItem('pseudo'));
         } else {
-            var regex = /^(\+237 )(6)[5-9][0-9]{7}/;
+            var regex = /^(6)[5-9][0-9]{7}/;
             var regex1 = /^[a-zA-Z0-9_]{4,}$/;
             if (regex.test($('#phone').val()) && regex1.test($('#password').val())) {
                 $.ajax({

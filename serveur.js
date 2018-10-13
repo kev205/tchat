@@ -80,7 +80,7 @@ app.route('/signIn')
     res.sendFile(path.join(__dirname, 'views/signIn.html'));
   })
   .post((req, res) => {
-    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\', CURRENT_DATE())', (error) => {
+    db.query('INSERT INTO utilisateur(TEL, PSEUDO, PSSWD, CONNECT, DATE) VALUES(\'' + req.body.TEL + '\', \'' + req.body.PSEUDO + '\', \'' + req.body.PSSWD + '\', 1, CURRENT_DATE())', (error) => {
       if (error) {
         res.setHeader('sign-in-error', error.errno);
         res.sendFile(path.join(__dirname, 'views/signIn.html'));
